@@ -1,0 +1,34 @@
+{
+  "name": "start-11ty",
+  "version": "1.0.0",
+  "description": "This is jplace's 11ty starter.",
+  "main": "index.js",
+  "scripts": {
+    "build:site": "npx @11ty/eleventy",
+    "build": "npm run build:site",
+    "serve": "npx @11ty/eleventy --serve",
+    "serve:dev": "PROJECT_DEV=true npm run serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@11ty/eleventy": "^0.11.1",
+    "@11ty/eleventy-plugin-rss": "^1.1.0",
+    "autoprefixer": "^9.8.6",
+    "htmlnano": "^0.2.8",
+    "js-beautify": "^1.13.5",
+    "luxon": "^1.25.0",
+    "markdown-it": "^11.0.1",
+    "nunjucks": "^3.2.2",
+    "postcss-import": "^12.0.1",
+    "postcss-mixins": "^6.2.3",
+    "postcss-nesting": "^7.0.1",
+    "postcss-prettify": "^0.3.4",
+    "posthtml": "^0.15.1",
+    "posthtml-alt-always": "^1.0.1",
+    "posthtml-link-noreferrer": "^1.0.9",
+    "prettier": "^2.2.1",
+    "tailwindcss": "^1.9.6"
+  }
+}
