@@ -1,6 +1,76 @@
 ---
-layout: layouts/_base.njk
-title: jplace's 11ty Starter
+title: Barrrgh!
 ---
 
-<h1 class="text-6xl">Hello, World!</h1>
+{% extends "layouts/_base.njk" %}
+<!-- prettier-ignore -->
+{% block styles %}
+{{ super() }}
+<link
+  href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css"
+  rel="stylesheet"
+/>
+{% endblock %}
+<!-- prettier-ignore -->
+{% block body %}
+<header class="flex items-center justify-center sm:mt-8">
+  <h1 class="text-6xl">Barrrgh!</h1>
+</header>
+<main class="flex items-center justify-center">
+  <div
+    class="w-full sm:w-128 sm:flex-initial p-8 border-t border-b sm:border border-gray-300 sm:rounded bg-white"
+  >
+    <form id="ingredients-form">
+      <div class="flex justify-center mb-4">
+        <label for="ingredients-select">What do you want in your drink?</label>
+      </div>
+      <div class="flex justify-center">
+        <select
+          id="ingredients-select"
+          name="ingredients[]"
+          autocomplete="off"
+          multiple
+          placeholder="Add ingredients ..."
+          class="block w-full rounded-sm cursor-pointer focus:outline-none"
+        >
+          <option value="bourbon">Bourbon</option>
+          <option value="lemon juice">Lemon juice</option>
+          <option value="honey syrup">Honey syrup</option>
+          <option value="lime juice">Lime juice</option>
+          <option value="gin">Gin</option>
+          <option value="cointreau">Cointreau</option>
+        </select>
+      </div>
+    </form>
+    <ul class="mt-4">
+      {% for blah in range(0, 5) %}
+      <li>
+        <a href="/drink/gold-rush" class="block border-b p-4">
+          <h2>Gold Rush</h2>
+          <div class="text-xs text-gray-700">
+            <span
+              >2 ounces bourbon, ¾ ounce lemon juice, ¾ ounce honey syrup</span
+            >
+          </div>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+<script>
+  function onIngredientsChange(ingredients) {
+    console.log(ingredients);
+  }
+
+  new TomSelect("#ingredients-select", {
+    plugins: {
+      remove_button: {
+        title: "Remove this item",
+      },
+    },
+    onChange: onIngredientsChange,
+  });
+</script>
+{% endblock %}
