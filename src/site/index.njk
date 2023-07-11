@@ -41,7 +41,7 @@ title: Barrrgh!
         </select>
       </div>
     </form>
-    <ul class="mt-4">
+    <ul id="drinks-list" class="mt-4">
       {% for blah in range(0, 5) %}
       <li>
         <a href="/drink/gold-rush" class="block border-b p-4 hover:bg-gray-100">
@@ -65,6 +65,7 @@ title: Barrrgh!
   {{ collections.drinkSlugsToDrinks | dump | safe }}
 </script>
 <script>
+  // Load data
   const ingredientsToDrinks = JSON.parse(
     document.getElementById("ingredients-to-drinks-data").textContent
   );
@@ -72,6 +73,17 @@ title: Barrrgh!
     document.getElementById("drink-slugs-to-drinks-data").textContent
   );
 
+  // Manage drinks lists
+  const $drinksList = document.getElementById("drinks-list");
+  function renderDrinksList(drinkSlugs) {
+    const newChildren = [];
+    for (const drinkSlug of drinkSlugs) {
+      newChildren.push(document.createTextNode(drinkSlug));
+    }
+    $drinksList.replaceChildren(...newChildren);
+  }
+
+  // Utils
   function intersection(setA, setB) {
     const _intersection = new Set();
     for (const elem of setB) {
@@ -82,9 +94,10 @@ title: Barrrgh!
     return _intersection;
   }
 
+  // Search functionality
   function onIngredientsChange(ingredients) {
     if (ingredients.length === 0) {
-      console.log("empty!");
+      renderDrinksList([]);
       return;
     }
 
@@ -95,10 +108,9 @@ title: Barrrgh!
         new Set(ingredientsToDrinks[ingredients[i]])
       );
     }
-    console.log(matchingSlugs);
+    renderDrinksList(matchingSlugs);
     return;
   }
-
   new TomSelect("#ingredients-select", {
     plugins: {
       remove_button: {
