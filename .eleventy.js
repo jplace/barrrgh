@@ -42,6 +42,43 @@ module.exports = function (config) {
     }
   });
 
+  config.addFilter("keys", (obj) => {
+    return Object.keys(obj);
+  });
+
+  config.addCollection("ingredientsToDrinks", (collectionApi) => {
+    const ingredientTagToDrinks = {};
+    for (const drink of collectionApi.getFilteredByTag("drink")) {
+      const ingredientTags = drink.data.ingredientTags;
+      const drinkSlug = drink.fileSlug;
+
+      for (const ingredientTag of ingredientTags) {
+        if (ingredientTagToDrinks[ingredientTag] === undefined) {
+          ingredientTagToDrinks[ingredientTag] = [];
+        }
+        ingredientTagToDrinks[ingredientTag].push(drinkSlug);
+      }
+    }
+    return ingredientTagToDrinks;
+  });
+
+  config.addCollection("drinkSlugsToDrinks", (collectionApi) => {
+    const drinkSlugsToDrinks = {};
+    for (const drink of collectionApi.getFilteredByTag("drink")) {
+      const drinkSlug = drink.fileSlug;
+      const drinkTitle = drink.data.title;
+      const ingredients = drink.data.ingredients;
+      const drinkUrl = drink.url;
+
+      drinkSlugsToDrinks[drinkSlug] = {
+        drinkTitle,
+        ingredients,
+        drinkUrl,
+      };
+    }
+    return drinkSlugsToDrinks;
+  });
+
   // Pass through static assets
   config.addPassthroughCopy("./src/site/images");
   config.addPassthroughCopy("./src/site/fonts");

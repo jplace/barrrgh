@@ -33,19 +33,18 @@ title: Barrrgh!
           placeholder="Add ingredients ..."
           class="block w-full rounded-sm cursor-pointer focus:outline-none"
         >
-          <option value="bourbon">Bourbon</option>
-          <option value="lemon juice">Lemon juice</option>
-          <option value="honey syrup">Honey syrup</option>
-          <option value="lime juice">Lime juice</option>
-          <option value="gin">Gin</option>
-          <option value="cointreau">Cointreau</option>
+          {% for ingredient in collections.ingredientsToDrinks | keys%}
+          <option value="{{ ingredient }}">
+            {{ ingredient | capitalize }}
+          </option>
+          {% endfor %}
         </select>
       </div>
     </form>
     <ul class="mt-4">
       {% for blah in range(0, 5) %}
       <li>
-        <a href="/drink/gold-rush" class="block border-b p-4">
+        <a href="/drink/gold-rush" class="block border-b p-4 hover:bg-gray-100">
           <h2>Gold Rush</h2>
           <div class="text-xs text-gray-700">
             <span
@@ -59,9 +58,45 @@ title: Barrrgh!
   </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+<script id="ingredients-to-drinks-data" type="application/json">
+  {{ collections.ingredientsToDrinks | dump | safe }}
+</script>
+<script id="drink-slugs-to-drinks-data" type="application/json">
+  {{ collections.drinkSlugsToDrinks | dump | safe }}
+</script>
 <script>
+  const ingredientsToDrinks = JSON.parse(
+    document.getElementById("ingredients-to-drinks-data").textContent
+  );
+  const drinkSlugsToDrinks = JSON.parse(
+    document.getElementById("drink-slugs-to-drinks-data").textContent
+  );
+
+  function intersection(setA, setB) {
+    const _intersection = new Set();
+    for (const elem of setB) {
+      if (setA.has(elem)) {
+        _intersection.add(elem);
+      }
+    }
+    return _intersection;
+  }
+
   function onIngredientsChange(ingredients) {
-    console.log(ingredients);
+    if (ingredients.length === 0) {
+      console.log("empty!");
+      return;
+    }
+
+    let matchingSlugs = new Set(ingredientsToDrinks[ingredients[0]]);
+    for (let i = 1; i < ingredients.length; i++) {
+      matchingSlugs = intersection(
+        matchingSlugs,
+        new Set(ingredientsToDrinks[ingredients[i]])
+      );
+    }
+    console.log(matchingSlugs);
+    return;
   }
 
   new TomSelect("#ingredients-select", {
