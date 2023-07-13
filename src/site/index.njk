@@ -18,7 +18,7 @@ title: Barrrgh!
 </header>
 <main class="flex items-center justify-center">
   <div
-    class="w-full sm:w-128 sm:flex-initial p-8 border-t border-b sm:border border-gray-300 sm:rounded bg-white"
+    class="w-full sm:w-128 sm:flex-initial p-8 border-t border-b sm:border border-gray-300 sm:rounded bg-white space-y-4"
   >
     <form id="ingredients-form">
       <div class="flex justify-center mb-4">
@@ -41,7 +41,10 @@ title: Barrrgh!
         </select>
       </div>
     </form>
-    <ul id="drinks-list"></ul>
+    <ul id="drinks-list" style="display: none"></ul>
+    <h2 id="drinks-no-match" class="text-center" style="display: none">
+      No drinks with all these ingredients ☠️
+    </h2>
   </div>
 </main>
 <template id="drink-li-template">
@@ -52,11 +55,6 @@ title: Barrrgh!
         <span data-drink-li-prop="ingredients"></span>
       </div>
     </a>
-  </li>
-</template>
-<template id="no-match-template">
-  <li class="text-center">
-    <h2>No drinks with all these ingredients ☠️</h2>
   </li>
 </template>
 <script id="ingredients-to-drinks-data" type="application/json">
@@ -78,11 +76,9 @@ title: Barrrgh!
   // Manage drinks lists
   const DrinkList = function () {
     this.$drinksList = document.getElementById("drinks-list");
+    this.$drinksNoMatch = document.getElementById("drinks-no-match");
     this.$itemTemplate = document.getElementById(
       "drink-li-template"
-    ).content.firstElementChild;
-    this.$noMatchTemplate = document.getElementById(
-      "no-match-template"
     ).content.firstElementChild;
   };
 
@@ -103,11 +99,15 @@ title: Barrrgh!
     for (const drinkSlug of drinkSlugs) {
       newChildren.push(this.createDrinkItemNode(drinkSlugsToDrinks[drinkSlug]));
     }
+    this.$drinksNoMatch.style.display = "none";
+    this.$drinksList.style.display = null;
     this.$drinksList.replaceChildren(...newChildren);
   };
 
   DrinkList.prototype.renderNoMatch = function (drinkSlugs) {
-    this.$drinksList.replaceChildren(this.$noMatchTemplate.cloneNode(true));
+    this.$drinksList.style.display = "none";
+    this.$drinksList.replaceChildren();
+    this.$drinksNoMatch.style.display = null;
   };
 
   // Utils
