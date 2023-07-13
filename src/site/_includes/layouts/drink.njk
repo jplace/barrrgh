@@ -6,8 +6,17 @@
   <div
     class="w-full sm:w-128 sm:flex-initial py-6 px-8 border-t border-b sm:border border-gray-300 sm:rounded bg-white"
   >
-    <h1 class="text-2xl leading-tight mb-4">{{ title }}</h1>
-    <p class="text-sm mb-6">{{ recipe }}</p>
+    <h1 class="text-2xl leading-tight font-serif mb-4">{{ title }}</h1>
+    <h2 class="text-xs text-gray-700 font-serif mb-1">Ingredients</h2>
+    <ul class="mb-4">
+      {% for ingredient in ingredients %}
+      <li>
+        {{ ingredient }}
+      </li>
+      {% endfor %}
+    </ul>
+    <h2 class="text-xs text-gray-700 font-serif mb-1">Preparation</h2>
+    <p class="mb-6">{{ recipe }}</p>
   </div>
 </main>
 <div class="max-w-lg flex justify-center sm:justify-end mx-auto mt-4 sm:mt-2">
