@@ -1,4 +1,4 @@
 module.exports = {
-  url: "http://localhost:8080", // use this only when absolute URLs are required
-  defaultDescription: "jplace's 11ty Starter",
+  url: "https://barrrgh.com", // use this only when absolute URLs are required
+  defaultDescription: "Reach for a cocktail",
 };

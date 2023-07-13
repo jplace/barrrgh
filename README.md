@@ -1,4 +1,4 @@
-# 11ty Starter
+# Barrrgh
 
 This is jplace's [11ty](https://www.11ty.dev/) starter. It's configured to be deployed to [Netlify](https://www.netlify.com/).
 
