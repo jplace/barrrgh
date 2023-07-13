@@ -65,16 +65,48 @@ title: Barrrgh!
 </script>
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 <script>
-  // Load data
-  const ingredientsToDrinks = JSON.parse(
-    document.getElementById("ingredients-to-drinks-data").textContent
-  );
-  const drinkSlugsToDrinks = JSON.parse(
-    document.getElementById("drink-slugs-to-drinks-data").textContent
-  );
+  // Manage traversing drinks data
+  const DrinksData = function () {
+    this.ingredientsToDrinks = JSON.parse(
+      document.getElementById("ingredients-to-drinks-data").textContent
+    );
+    this.drinkSlugsToDrinks = JSON.parse(
+      document.getElementById("drink-slugs-to-drinks-data").textContent
+    );
+  };
+
+  DrinksData._intersection = function (setA, setB) {
+    const _intersection = new Set();
+    for (const elem of setB) {
+      if (setA.has(elem)) {
+        _intersection.add(elem);
+      }
+    }
+    return _intersection;
+  };
+
+  DrinksData.prototype.searchDrinks = function (ingredients) {
+    if (ingredients.length === 0) {
+      return [];
+    }
+
+    let matchingSlugs = new Set(this.ingredientsToDrinks[ingredients[0]]);
+    for (let i = 1; i < ingredients.length; i++) {
+      matchingSlugs = DrinksData._intersection(
+        matchingSlugs,
+        new Set(this.ingredientsToDrinks[ingredients[i]])
+      );
+    }
+
+    return Array.from(matchingSlugs);
+  };
+
+  DrinksData.prototype.getDrinkBySlug = function (drinkSlug) {
+    return this.drinkSlugsToDrinks[drinkSlug];
+  };
 
   // Manage drinks lists
-  const DrinkList = function () {
+  const DrinksList = function () {
     this.$drinksList = document.getElementById("drinks-list");
     this.$drinksNoMatch = document.getElementById("drinks-no-match");
     this.$itemTemplate = document.getElementById(
@@ -82,7 +114,7 @@ title: Barrrgh!
     ).content.firstElementChild;
   };
 
-  DrinkList.prototype.createDrinkItemNode = function (drink) {
+  DrinksList.prototype.createDrinkItemNode = function (drink) {
     const $item = this.$itemTemplate.cloneNode(true);
     const $anchor = $item.children[0];
     $anchor.href = drink.drinkUrl;
@@ -94,54 +126,46 @@ title: Barrrgh!
     return $item;
   };
 
-  DrinkList.prototype.renderDrinksList = function (drinkSlugs) {
+  DrinksList.prototype.resetDrinksList = function () {
+    this.$drinksNoMatch.style.display = "none";
+    this.$drinksList.style.display = "none";
+    this.$drinksList.replaceChildren();
+  };
+
+  DrinksList.prototype.renderDrinksList = function (drinks) {
     const newChildren = [];
-    for (const drinkSlug of drinkSlugs) {
-      newChildren.push(this.createDrinkItemNode(drinkSlugsToDrinks[drinkSlug]));
+    for (const drink of drinks) {
+      newChildren.push(this.createDrinkItemNode(drink));
     }
     this.$drinksNoMatch.style.display = "none";
     this.$drinksList.style.display = null;
     this.$drinksList.replaceChildren(...newChildren);
   };
 
-  DrinkList.prototype.renderNoMatch = function (drinkSlugs) {
+  DrinksList.prototype.renderNoMatch = function (drinkSlugs) {
     this.$drinksList.style.display = "none";
     this.$drinksList.replaceChildren();
     this.$drinksNoMatch.style.display = null;
   };
 
-  // Utils
-  function intersection(setA, setB) {
-    const _intersection = new Set();
-    for (const elem of setB) {
-      if (setA.has(elem)) {
-        _intersection.add(elem);
-      }
-    }
-    return _intersection;
-  }
-
-  // Search functionality
-  const drinkList = new DrinkList();
+  const drinksData = new DrinksData();
+  const drinksList = new DrinksList();
   function onIngredientsChange(ingredients) {
     if (ingredients.length === 0) {
-      drinkList.renderDrinksList([]);
+      drinksList.resetDrinksList();
       return;
     }
 
-    let matchingSlugs = new Set(ingredientsToDrinks[ingredients[0]]);
-    for (let i = 1; i < ingredients.length; i++) {
-      matchingSlugs = intersection(
-        matchingSlugs,
-        new Set(ingredientsToDrinks[ingredients[i]])
-      );
+    const drinkSlugs = drinksData.searchDrinks(ingredients);
+
+    if (drinkSlugs.length === 0) {
+      drinksList.renderNoMatch();
+      return;
     }
 
-    if (matchingSlugs.size > 0) {
-      drinkList.renderDrinksList(matchingSlugs);
-    } else {
-      drinkList.renderNoMatch();
-    }
+    drinksList.renderDrinksList(
+      drinkSlugs.map((ds) => drinksData.getDrinkBySlug(ds))
+    );
   }
   new TomSelect("#ingredients-select", {
     plugins: {
