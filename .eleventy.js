@@ -84,6 +84,7 @@ module.exports = function (config) {
   config.addPassthroughCopy("./src/site/fonts");
   config.addPassthroughCopy("./src/site/_redirects");
   config.addPassthroughCopy("./src/site/_headers");
+  config.addPassthroughCopy("./src/site/css/tom-select.css");
 
   // Optimize HTML
   config.addTransform("posthtml", async function (content, outputPath) {
