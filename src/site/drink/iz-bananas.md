@@ -7,6 +7,7 @@ ingredientTags:
   - amaro
   - banana liqueur
   - lemon juice
+  - angostura bitters
 ingredients:
   - 1 1/2 ounces cachaca
   - 1 ounce amaro montenegro

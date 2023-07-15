@@ -5,7 +5,7 @@ title: Paper Plane
 ingredientTags:
   - bourbon
   - aperol
-  - amaro nonino
+  - amaro
   - lemon juice
 ingredients:
   - 3/4 ounce bourbon

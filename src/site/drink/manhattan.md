@@ -5,6 +5,7 @@ title: Manhattan
 ingredientTags:
   - rye
   - sweet vermouth
+  - angostura bitters
 ingredients:
   - 2 ounces rye whiskey
   - 1 ounce sweet vermouth
