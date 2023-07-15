@@ -11,5 +11,5 @@ ingredients:
   - 2 dashes angostura bitters
   - cherry garnish
 recipe: |
-Stir ingredients over ice until chilled. Strain into chilled glass. Garnish with a cherry.
+  Stir ingredients over ice until chilled. Strain into chilled glass. Garnish with a cherry.
 ---

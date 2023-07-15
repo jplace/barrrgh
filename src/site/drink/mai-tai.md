@@ -18,5 +18,5 @@ ingredients:
   - dark rum (float)
   - mint sprig (garnish)
 recipe: |
-Combine light rum, gold rum, orgeat, cointreau, and lime in a shaker with ice and shake vigorously. Pour over ice. Float an extra 1/2 ounce dark rum over the top and garnish with mint if desired. 
+  Combine light rum, gold rum, orgeat, cointreau, and lime in a shaker with ice and shake vigorously. Pour over ice. Float an extra 1/2 ounce dark rum over the top and garnish with mint if desired.
 ---

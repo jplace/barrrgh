@@ -15,5 +15,5 @@ ingredients:
   - 1 dash angostura bitters
   - orange peel (for garnish)
 recipe: |
-Add all ingredients to a shaker filled with ice. Shake until chilled. Strain into a glass over ice. Garnish with an orange peel. 
+  Add all ingredients to a shaker filled with ice. Shake until chilled. Strain into a glass over ice. Garnish with an orange peel.
 ---
