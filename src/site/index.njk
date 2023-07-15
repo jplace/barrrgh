@@ -147,9 +147,20 @@ title: Barrrgh!
 
   const drinksData = new DrinksData();
   const drinksList = new DrinksList();
+
+  const ingredientSelector = new TomSelect("#ingredients-select", {
+    plugins: {
+      remove_button: {
+        title: "Remove this item",
+      },
+    },
+    closeAfterSelect: true,
+    // onChange: onIngredientsChange,
+  });
   function onIngredientsChange(ingredients) {
     if (ingredients.length === 0) {
       drinksList.resetDrinksList();
+      ingredientSelector.blur();
       return;
     }
 
@@ -157,21 +168,15 @@ title: Barrrgh!
 
     if (drinkSlugs.length === 0) {
       drinksList.renderNoMatch();
+      ingredientSelector.blur();
       return;
     }
 
     drinksList.renderDrinksList(
       drinkSlugs.map((ds) => drinksData.getDrinkBySlug(ds))
     );
+    ingredientSelector.blur();
   }
-  new TomSelect("#ingredients-select", {
-    plugins: {
-      remove_button: {
-        title: "Remove this item",
-      },
-    },
-    closeAfterSelect: true,
-    onChange: onIngredientsChange,
-  });
+  ingredientSelector.on("change", onIngredientsChange);
 </script>
 {% endblock %}
