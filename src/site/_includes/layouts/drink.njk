@@ -16,7 +16,13 @@
       {% endfor %}
     </ul>
     <h2 class="text-xs text-gray-700 font-serif mb-1">Preparation</h2>
-    <p class="mb-6">{{ recipe }}</p>
+    <div>
+      <p>{{ recipe }}</p>
+      {% if notes %}
+      <hr class="my-4" />
+      <p class="italic text-xs">{{ notes }}</p>
+      {% endif %}
+    </div>
   </div>
 </main>
 <div class="max-w-lg flex justify-center sm:justify-end mx-auto mt-4 sm:mt-2">

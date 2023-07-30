@@ -9,9 +9,11 @@ ingredientTags:
   - sweet vermouth
 ingredients:
   - 2 ounces rye or bourbon
-  - 1 ounce campari
+  - 1 ounce Campari
   - 1 ounce sweet vermouth
-  - lemon peel (garnish)
+  - Lemon peel (for garnish)
 recipe: |
   Stir ingredients together in a mixing glass filled with ice, and strain into a glass with ice. Garnish with lemon peel.
+notes: |
+  Traditionally, a Boulevardier contains equal parts of all 3 ingredients. This recipe is a reaction to the common feedback that Campari is a bully.
 ---

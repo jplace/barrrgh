@@ -9,12 +9,12 @@ ingredientTags:
   - lemon juice
   - angostura bitters
 ingredients:
-  - 1 1/2 ounces cachaca
+  - 1 ½ ounces cachaca
   - 1 ounce amaro montenegro
-  - 3/4 ounce banana liqueur
-  - 3/4 ounce lemon juice
+  - ¾ ounce banana liqueur
+  - ¾ ounce lemon juice
   - 1 dash angostura bitters
-  - orange peel (for garnish)
+  - Orange peel (for garnish)
 recipe: |
   Add all ingredients to a shaker filled with ice. Shake until chilled. Strain into a glass over ice. Garnish with an orange peel.
 ---
