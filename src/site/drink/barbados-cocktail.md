@@ -11,8 +11,6 @@ ingredients:
   - 1 ounce Velvet Falernum
   - 1 ½ ounces dark rum
   - ¾ ounce lime juice
-  - Soda water
-  - Lemon twist (for garnish)
 recipe: |
   Fill shaker with ice. Add falernum, rum, and lime juice. Shake and strain into coupe glass.
 ---
