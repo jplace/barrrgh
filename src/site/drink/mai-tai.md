@@ -9,6 +9,7 @@ ingredientTags:
   - cointreau
   - lime juice
   - dark rum
+  - rum
 ingredients:
   - 1 ounce light rum
   - 1 ounce gold rum

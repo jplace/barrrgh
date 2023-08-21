@@ -4,6 +4,7 @@ layout: layouts/drink.njk
 title: Hot Buttered Rum
 ingredientTags:
   - dark rum
+  - rum
 ingredients:
   - ¾ cup very hot water (just off the boil)
   - 1 teaspoon dark brown sugar (or maple syrup)

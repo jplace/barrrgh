@@ -5,6 +5,7 @@ title: Jungle Bird
 ingredientTags:
   - simple syrup
   - dark rum
+  - rum
   - campari
   - pineapple juice
   - lime juice
