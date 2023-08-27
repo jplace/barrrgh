@@ -20,7 +20,7 @@
       <p>{{ recipe }}</p>
       {% if notes %}
       <hr class="my-4" />
-      <p class="italic text-xs">{{ notes }}</p>
+      <p class="italic text-xs">{{ notes | safe }}</p>
       {% endif %}
     </div>
   </div>
