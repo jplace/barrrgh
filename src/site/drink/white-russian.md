@@ -5,7 +5,7 @@ title: White Russian
 ingredientTags:
   - heavy cream
   - kahlua
-  - vodak
+  - vodka
 ingredients:
   - 1 ½ ounces heavy cream
   - 1 ½ ounces Kahlua
