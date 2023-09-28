@@ -14,4 +14,6 @@ ingredients:
   - Cherry (for garnish)
 recipe: |
   Stir ingredients over ice until chilled. Strain into chilled glass. Garnish with a cherry.
+notes: |
+  The Manhattan template can be played with. Try subbing half the sweet vermouth for dry vermouth. Or, change angostura bitters for another bitters.
 ---
