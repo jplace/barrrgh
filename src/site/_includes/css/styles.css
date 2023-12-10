@@ -11,4 +11,15 @@
 @import "tailwindcss/utilities";
 
 /* Custom utilities */
-/* None */
+.notes-markdown {
+  @apply italic;
+  @apply text-xs;
+
+  a {
+    @apply underline;
+  }
+
+  p + p {
+    @apply mt-2;
+  }
+}
