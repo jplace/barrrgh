@@ -12,7 +12,9 @@ ingredients:
   - 1 dash orange bitters
   - Lemon twist or olives (for garnish)
 recipe: |
-  Shake all liquid ingredients with ice. Shaking them a lot is critical, since dilution and coldness are key to making a martini palitable. Strain into a martini glass and garnish with lemon twist or olives.
+  Stir all liquid ingredients in a mixing glass chocked full of ice. Strain into a martini glass and garnish with lemon twist or olives.
 notes: |
   A 50/50 martini can be made by using equal amounts gin and vermouth.
+
+  In an older version of this recipe, I suggested shaking the heck out of the martini. I've since heard, but have not verified in a blind taste test, that shaking disrupts the flavor of th gin. It might only be advisable for vodka martinis?
 ---

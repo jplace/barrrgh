@@ -4,8 +4,8 @@ layout: layouts/drink.njk
 title: Aviation
 ingredientTags:
   - gin
-  - maraschino liqueur
-  - creme de violette liqueur
+  - maraschino
+  - creme de violette
   - lemon juice
 ingredients:
   - 2 ounces gin
