@@ -1,7 +1,7 @@
 ---
 tags: drink
 layout: layouts/drink.njk
-title: Greenpoint
+title: Scary Movie
 ingredientTags:
   - rye
   - sweet vermouth
