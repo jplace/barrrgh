@@ -18,4 +18,6 @@ ingredients:
   - Dash of Angostura bitters
 recipe: |
   Mix all ingredients except soda water and bitters in an ice-filled highball glass. Top with soda water. Stir and dash with Angostura bitters.
+notes: |
+  Alexa prefers only ½ ounce Benedictine.
 ---
