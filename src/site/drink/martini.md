@@ -16,5 +16,5 @@ recipe: |
 notes: |
   A 50/50 martini can be made by using equal amounts gin and vermouth.
 
-  In an older version of this recipe, I suggested shaking the heck out of the martini. I've since heard, but have not verified in a blind taste test, that shaking disrupts the flavor of th gin. It might only be advisable for vodka martinis?
+  In an older version of this recipe, I suggested shaking the heck out of the martini. I've since heard and verified in a blind taste test that shaking disrupts the flavor of the gin. Stir your gin martinis!
 ---
