@@ -10,14 +10,18 @@ title: Barrrgh!
 {% endblock %}
 <!-- prettier-ignore -->
 {% block body %}
-<header class="flex items-center justify-center sm:mt-8">
+{# <header class="flex items-center justify-center sm:mt-8">
   <h1 class="text-6xl">Barrrgh!</h1>
-</header>
+</header> #}
 <main class="flex items-center justify-center">
   <div
-    class="w-full sm:w-128 sm:flex-initial p-8 border-t border-b sm:border border-gray-300 sm:rounded bg-white space-y-4"
+    style="background: #826843"
+    class="w-full sm:w-128 sm:flex-initial border-t border-b sm:border border-gray-300 sm:rounded"
   >
-    <form id="ingredients-form">
+    <picture style="mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 95%, transparent 100%);">
+        <img src="/images/barrrgh_beach.png" alt="Barrrgh!" />
+    </picture>
+    <form id="ingredients-form" class="w-full sm:w-128 sm:flex-initial p-8 space-y-4">
       <div class="flex justify-center mb-4">
         <label for="ingredients-select">What do you want in your drink?</label>
       </div>
