@@ -1,15 +1,15 @@
 ---
 tags: drink
 layout: layouts/drink.njk
-title: Negroni
+title: White Negroni
 ingredientTags:
   - gin
   - bitter bianco
-  - white vermouth
+  - vermouth blanc
 ingredients:
   - 1 ounce London dry gin 
   - 1 ounce Luxardo Bitter Bianco
-  - 1 ounce white vermouth
+  - 1 ounce vermouth blanc
   - Grapefruit peel (for garnish)
 recipe: |
   In an old-fashioned glass, place ice cubes. Add the gin, Luxardo Bitter Bianco, and vermouth. Stir well. Express a grapefruit peel over the drink and garnish.
