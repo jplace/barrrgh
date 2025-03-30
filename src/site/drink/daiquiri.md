@@ -14,5 +14,5 @@ ingredients:
 recipe: |
   Shake the rum, lime juice and simple syrup with ice for a good while. Strain the cocktail into a coupe glass and garnish with a lime wheel.
 notes: |
-  If you are using Ron Colon (which you should!), then only about a ½ ounce of simple syrup is needed.
+  If you are using Ron Colon (which you should!), then only about a ¼ ounce of simple syrup is needed.
 ---
