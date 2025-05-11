@@ -6,6 +6,7 @@ ingredientTags:
   - cynar
   - sweet vermouth
   - gin
+  - meyer lemon
 ingredients:
   - 1 ounce Cynar
   - 1 ounce sweet vermouth
