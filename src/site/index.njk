@@ -13,16 +13,13 @@ title: Barrrgh!
 {# <header class="flex items-center justify-center sm:mt-8">
   <h1 class="text-6xl">Barrrgh!</h1>
 </header> #}
-<main class="flex items-center justify-center">
-  <div
-    style="background: #826843"
-    class="w-full sm:w-128 sm:flex-initial border-t border-b sm:border border-gray-300 sm:rounded"
-  >
-    <picture style="mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 95%, transparent 100%);">
-        <img src="/images/barrrgh_beach.png" alt="Barrrgh!" />
+<main class="flex flex-col items-center justify-center">
+  <div class="w-full sm:w-128">
+    <picture>
+      <img style="padding-left: 114px;" src="/images/barrrgh_recipe_page.png" alt="Barrrgh!" />
     </picture>
-    <form id="ingredients-form" class="w-full sm:w-128 sm:flex-initial p-8 space-y-4">
-      <div class="flex justify-center mb-4">
+    <form id="ingredients-form" class="relative sm:flex-initial">
+      <div class="absolute" style="top: -30px; left: 0px;">
         <label for="ingredients-select">What do you want in your drink?</label>
       </div>
       <div class="flex justify-center">
@@ -31,7 +28,7 @@ title: Barrrgh!
           name="ingredients[]"
           autocomplete="off"
           multiple
-          placeholder="Add ingredients ..."
+          placeholder="Add an ingredient..."
           class="block w-full rounded-sm cursor-pointer focus:outline-none"
         >
           {% for ingredient in collections.ingredientsToDrinks | keys%}
