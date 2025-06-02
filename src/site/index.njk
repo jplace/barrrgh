@@ -10,13 +10,11 @@ title: Barrrgh!
 {% endblock %}
 <!-- prettier-ignore -->
 {% block body %}
-{# <header class="flex items-center justify-center sm:mt-8">
-  <h1 class="text-6xl">Barrrgh!</h1>
-</header> #}
 <main class="flex flex-col items-center sm:mt-16">
-  <div class="relative bg-white border-b border-t sm:border sm:rounded border-gray-300 sm:flex-initial sm:w-128 w-full p-8 ">
-    <img class="w-40 absolute top-0 left-0" src="/images/barrrgh-logo-ship.png" width="1741" height="858" alt="Barrrgh!" />
-    <img class="w-40 justify-self-end" src="/images/martin-the-pirate.png" width="1082" height="1164" alt="Martin the pirate smiling with a martini" />
+  <div class="relative flex flex-col bg-white border-b border-t sm:border sm:rounded border-gray-300 sm:flex-initial sm:w-128 w-full py-4 px-8 sm:p-8">
+    <img style="width: 15rem;" class="block sm:hidden absolute" src="/images/barrrgh-logo-ship.png" width="1741" height="858" alt="Barrrgh!" />
+    <img style="width: 15rem; top: 2rem; left: 2.5rem" class="hidden sm:block absolute" src="/images/barrrgh-logo-ship.png" width="1741" height="858" alt="Barrrgh!" />
+    <img class="w-20 sm:w-40 -mr-4 sm:mr-0 mt-16 sm:mt-0 self-end" src="/images/martin-the-pirate.png" width="1082" height="1164" alt="Martin the pirate smiling with a martini" />
     <form id="ingredients-form" class="relative sm:flex-initial">
       <div class="absolute" style="top: -30px; left: 0px;">
         <label for="ingredients-select">What do you want in your drink?</label>
