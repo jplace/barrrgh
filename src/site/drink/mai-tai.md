@@ -14,8 +14,9 @@ ingredients:
   - ¾ ounce lime juice
   - Dark rum (float)
   - Mint sprig (garnish)
+  - Spent lime shell (garnish)
 recipe: |
-  Combine rum, orgeat, orange curacao, and lime in a shaker with ice and shake vigorously. Pour over ice. Float an extra ½ ounce dark rum over the top and garnish with mint if desired.
+  Combine rum, orgeat, orange curacao, and lime in a shaker with ice and shake vigorously. Pour over ice. Float an extra ½ ounce dark rum over the top. Garnish with mint and a spent lime shell tucked on the side.
 notes: |
   This is Trader Vic's original recipe that I learned while attending an event at Pixar.
 ---
