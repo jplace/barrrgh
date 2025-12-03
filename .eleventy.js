@@ -106,20 +106,6 @@ module.exports = function (config) {
     return content;
   });
 
-  // Browsersync to serve 404
-  config.setBrowserSyncConfig({
-    callbacks: {
-      ready: function (err, browserSync) {
-        const content_404 = fs.readFileSync("./dist/404.html");
-
-        browserSync.addMiddleware("*", (req, res) => {
-          res.write(content_404);
-          res.end();
-        });
-      },
-    },
-  });
-
   return {
     dir: {
       input: "src/site",
