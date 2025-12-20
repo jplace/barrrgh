@@ -8,7 +8,7 @@ ingredientTags:
   - banana liqueur
   - angosture bitters
 ingredients:
-  - 2½ ounces aged Jamican rum
+  - 2 ounces aged Jamican rum
   - ¼ ounce creme de cacao
   - ¼ banana liqueur
   - 2 dashes angostura bitters
