@@ -1,11 +1,13 @@
-const pluginRss = require("@11ty/eleventy-plugin-rss");
-const markdownIt = require("markdown-it");
-const fs = require("fs");
-const posthtml = require("posthtml");
-const beautifyHtml = require("js-beautify").html;
-const { DateTime } = require("luxon");
+import markdownIt from "markdown-it";
+import posthtml from "posthtml";
+import jsBeautify from "js-beautify";
+import { DateTime } from "luxon";
+import pluginRss from "@11ty/eleventy-plugin-rss";
+import altAlways from "posthtml-alt-always";
+import linkNoReferrer from "posthtml-link-noreferrer";
+import htmlnano from "htmlnano";
 
-module.exports = function (config) {
+export default function (config) {
   const isDev = process.env.PROJECT_DEV === "true";
   if (isDev) {
     console.log("Running with PROJECT_DEV set to true");
@@ -90,15 +92,15 @@ module.exports = function (config) {
   config.addTransform("posthtml", async function (content, outputPath) {
     if (outputPath.endsWith(".html")) {
       const { html } = await posthtml([
-        require("posthtml-alt-always")(),
-        require("posthtml-link-noreferrer")(),
-        require("htmlnano")({
+        altAlways(),
+        linkNoReferrer(),
+        htmlnano({
           minifySvg: false,
         }),
       ]).process(content);
 
       if (isDev) {
-        return beautifyHtml(html, { indent_size: 2 });
+        return jsBeautify.html(html, { indent_size: 2 });
       } else {
         return html;
       }
@@ -113,4 +115,4 @@ module.exports = function (config) {
     },
     templateFormats: ["njk", "11ty.js", "md"],
   };
-};
+}

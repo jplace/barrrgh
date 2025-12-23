@@ -1,10 +1,15 @@
-const fs = require("fs");
-const path = require("path");
-const postcss = require("postcss");
+import fs from "fs";
+import path from "path";
+import postcss from "postcss";
+import tailwindcss from "@tailwindcss/postcss";
+import cssnano from "cssnano";
 
-module.exports = class {
+export default class {
   async data() {
-    const rawFilepath = path.join(__dirname, "../_includes/css/styles.css");
+    const rawFilepath = path.join(
+      import.meta.dirname,
+      "../_includes/css/styles.css"
+    );
     return {
       permalink: "css/styles.css",
       eleventyExcludeFromCollections: true,
@@ -14,8 +19,8 @@ module.exports = class {
   }
 
   async render({ rawCss, rawFilepath }) {
-    return await postcss([require("@tailwindcss/postcss"), require("cssnano")])
+    return await postcss([tailwindcss(), cssnano()])
       .process(rawCss, { from: rawFilepath })
       .then((result) => result.css);
   }
-};
+}

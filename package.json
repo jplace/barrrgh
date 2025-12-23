@@ -1,6 +1,7 @@
 {
   "name": "start-11ty",
   "version": "1.0.0",
+  "type": "module",
   "description": "This is jplace's 11ty starter.",
   "main": "index.js",
   "scripts": {
@@ -15,19 +16,20 @@
   "devDependencies": {
     "@11ty/eleventy": "^3.1.2",
     "@11ty/eleventy-plugin-rss": "^2.0.4",
-    "@tailwindcss/postcss": "^4.1.17",
-    "autoprefixer": "^10.4.22",
+    "@tailwindcss/postcss": "^4.1.18",
+    "autoprefixer": "^10.4.23",
     "cssnano": "^7.1.2",
-    "htmlnano": "^0.2.8",
-    "js-beautify": "^1.13.5",
-    "luxon": "^1.25.0",
-    "markdown-it": "^11.0.1",
-    "nunjucks": "^3.2.2",
+    "htmlnano": "^3.0.0",
+    "js-beautify": "^1.15.4",
+    "luxon": "^3.7.2",
+    "markdown-it": "^14.1.0",
+    "nunjucks": "^3.2.4",
     "postcss": "^8.5.6",
-    "posthtml": "^0.15.1",
+    "posthtml": "^0.16.7",
     "posthtml-alt-always": "^1.0.1",
-    "posthtml-link-noreferrer": "^1.0.9",
-    "prettier": "^2.2.1",
-    "tailwindcss": "^4.1.17"
+    "posthtml-link-noreferrer": "^1.0.10",
+    "prettier": "^3.7.4",
+    "tailwindcss": "^4.1.18",
+    "terser": "^5.44.1"
   }
 }
