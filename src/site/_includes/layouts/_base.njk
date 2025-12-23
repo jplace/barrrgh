@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content="{{ eleventy.generator }}">
     <link rel="icon" type="image/png" href="/images/favicon.png" />
     <meta
       name="description"
@@ -54,7 +55,7 @@
     <title>{{ title }}</title>
   </head>
   <!-- prettier-ignore -->
-  <body class="bg-gray-100">
+  <body class="bg-slate-100">
     <!-- prettier-ignore -->
     {% block body %}
     {{ content | safe }}

@@ -1,14 +1,4 @@
-@import "tailwindcss/base";
-
-/* Custom fonts */
-/* None */
-
-@import "tailwindcss/components";
-
-/* Custom components */
-/* None */
-
-@import "tailwindcss/utilities";
+@import "tailwindcss";
 
 /* Custom utilities */
 .notes-markdown {
