@@ -1,8 +1,8 @@
 {
-  "name": "start-11ty",
+  "name": "barrrgh",
   "version": "1.0.0",
   "type": "module",
-  "description": "This is jplace's 11ty starter.",
+  "description": "Reach for a cocktail",
   "main": "index.js",
   "scripts": {
     "build:site": "npx @11ty/eleventy",
