@@ -28,7 +28,7 @@ export default function (config) {
   // Formatting for dates
   config.addFilter("readableDate", (dateStr) => {
     return DateTime.fromISO(dateStr, { zone: "utc" }).toLocaleString(
-      DateTime.DATE_FULL
+      DateTime.DATE_FULL,
     );
   });
   config.addFilter("htmlDateString", (dateObj) => {
@@ -87,6 +87,7 @@ export default function (config) {
   config.addPassthroughCopy("./src/site/_redirects");
   config.addPassthroughCopy("./src/site/_headers");
   config.addPassthroughCopy("./src/site/css/tom-select.css");
+  config.addPassthroughCopy("./src/site/site.webmanifest");
 
   // Optimize HTML
   config.addTransform("posthtml", async function (content, outputPath) {
