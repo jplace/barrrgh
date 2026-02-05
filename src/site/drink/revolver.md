@@ -8,7 +8,7 @@ ingredientTags:
   - orange bitters
   - angostura bitters
 ingredients:
-  - 2 ounces bourbon
+  - 2 ounces bourbon, preferrably Bulleit Bourbon
   - ½ ounce coffee liqueur
   - 2 dashes orange bitters
   - Flamed orange peel
