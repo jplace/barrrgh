@@ -10,10 +10,8 @@ ingredientTags:
 ingredients:
   - 2 ounces tequila
   - 1 ounce lime juice
-  - 1 ounce orange liqueur
-  - ¼ ounce simple syrup
+  - 1 ounce orange liqueur (preferably Cointreau)
+  - ¼ ounce agave (or simple syrup)
 recipe: |
-  Fill a cocktail shaker with ice. Add the tequila, lime juice, orange liqueur, and simple syrup. Shake until chilled. Strain into a rocks glass filled with ice cubes.
-notes: |
-  Jordan does 2 ounces tequila, 1 ounce orange liqueur, 1 lime. This is a very sour margarita, but does the job!
+  Fill a cocktail shaker with ice. Add the tequila, lime juice, orange liqueur, and agave. Shake until chilled. Strain into a rocks glass filled with ice cubes.
 ---
