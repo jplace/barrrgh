@@ -22,7 +22,7 @@
     "htmlnano": "^3.0.0",
     "js-beautify": "^1.15.4",
     "luxon": "^3.7.2",
-    "markdown-it": "^14.1.0",
+    "markdown-it": "^14.1.1",
     "nunjucks": "^3.2.4",
     "postcss": "^8.5.6",
     "posthtml": "^0.16.7",
