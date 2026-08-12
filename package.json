@@ -17,7 +17,7 @@
     "@11ty/eleventy": "^3.1.2",
     "@11ty/eleventy-plugin-rss": "^2.0.4",
     "@tailwindcss/postcss": "^4.1.18",
-    "autoprefixer": "^10.4.23",
+    "autoprefixer": "^10.4.24",
     "cssnano": "^7.1.2",
     "htmlnano": "^3.0.0",
     "js-beautify": "^1.15.4",
