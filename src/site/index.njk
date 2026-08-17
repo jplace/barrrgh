@@ -6,7 +6,20 @@ title: Barrrgh!
 <!-- prettier-ignore -->
 {% block styles %}
 {{ super() }}
-<link href="/css/tom-select.css" rel="stylesheet" />
+<style>
+  /* The whole bar lights up when anything inside it (a chip OR the text field)
+     is focused, so it reads as one unit filtering on ALL the chips. */
+  #search-box:focus-within {
+    box-shadow: 0 0 0 2px #94a3b8;
+    border-color: #94a3b8;
+  }
+  #search-dropdown .opt {
+    cursor: pointer;
+  }
+  #search-dropdown .opt:hover {
+    background: #f1f5f9;
+  }
+</style>
 {% endblock %}
 <!-- prettier-ignore -->
 {% block body %}
@@ -15,33 +28,38 @@ title: Barrrgh!
     <img style="width: 15rem;" class="block sm:hidden absolute" src="/images/barrrgh-logo-ship.png" width="1741" height="858" alt="Barrrgh!" />
     <img style="width: 15rem; top: 2rem; left: 2.5rem" class="hidden sm:block absolute" src="/images/barrrgh-logo-ship.png" width="1741" height="858" alt="Barrrgh!" />
     <img class="w-20 sm:w-40 -mr-4 sm:mr-0 mt-16 sm:mt-0 self-end" src="/images/martin-the-pirate.png" width="1082" height="1164" alt="Martin the pirate smiling with a martini" />
-    <form id="ingredients-form" class="relative sm:flex-initial">
-      <div class="absolute" style="top: -30px; left: 0px;">
-        <label for="ingredients-select">What do you want in your drink?</label>
+
+    <div id="search-area" class="relative">
+      <!-- Label is absolutely positioned so it takes no vertical space,
+           keeping the search bar tucked up against the pirate's torso. -->
+      <div class="absolute" style="top: -30px; left: 0;">
+        <label for="search-input" class="text-slate-700">What would you like to drink?</label>
       </div>
-      <div class="flex justify-center">
-        <select
-          id="ingredients-select"
-          name="ingredients[]"
+
+      <!-- The search bar: chips + the text field share one bordered box. -->
+      <div id="search-box" class="flex flex-wrap items-center gap-2 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 cursor-text">
+        <span id="chips" class="contents"></span>
+        <input
+          id="search-input"
+          type="text"
           autocomplete="off"
-          multiple
-          placeholder="Add an ingredient..."
-          class="block w-full rounded-sm cursor-pointer focus:outline-none"
-        >
-          {% for ingredient in collections.ingredientsToDrinks | keys%}
-          <option value="{{ ingredient }}">
-            {{ ingredient | capitalize }}
-          </option>
-          {% endfor %}
-        </select>
+          placeholder="Type a cocktail or ingredient"
+          class="flex-1 border-none outline-none bg-transparent"
+          style="min-width: 8rem;"
+        />
       </div>
-    </form>
+
+      <!-- Suggestions appear here while typing. -->
+      <div id="search-dropdown" class="mt-1 rounded-sm border border-slate-200 bg-white overflow-hidden" style="display: none"></div>
+    </div>
+
     <ul id="drinks-list" style="display: none"></ul>
     <h2 id="drinks-no-match" class="text-center" style="display: none">
       No drinks with all these ingredients ☠️
     </h2>
   </div>
 </main>
+
 <template id="drink-li-template">
   <li>
     <a href="#" class="block border-b border-slate-200 p-4 hover:bg-slate-100">
@@ -52,129 +70,230 @@ title: Barrrgh!
     </a>
   </li>
 </template>
+
 <script id="ingredients-to-drinks-data" type="application/json">
   {{ collections.ingredientsToDrinks | dump | safe }}
 </script>
 <script id="drink-slugs-to-drinks-data" type="application/json">
   {{ collections.drinkSlugsToDrinks | dump | safe }}
 </script>
-<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
 <script>
-  // Manage traversing drinks data
-  const DrinksData = function () {
-    this.ingredientsToDrinks = JSON.parse(
-      document.getElementById("ingredients-to-drinks-data").textContent
-    );
-    this.drinkSlugsToDrinks = JSON.parse(
-      document.getElementById("drink-slugs-to-drinks-data").textContent
-    );
-  };
+  // ---- Data (baked into the page at build time) ----
+  // ingredientsToDrinks: { "lime juice": ["margarita", "daiquiri", ...], ... }
+  // drinkSlugsToDrinks:  { "margarita": { drinkTitle, ingredients, drinkUrl }, ... }
+  const ingredientsToDrinks = JSON.parse(
+    document.getElementById("ingredients-to-drinks-data").textContent
+  );
+  const drinkSlugsToDrinks = JSON.parse(
+    document.getElementById("drink-slugs-to-drinks-data").textContent
+  );
+  const allIngredients = Object.keys(ingredientsToDrinks).sort();
 
-  DrinksData._intersection = function (setA, setB) {
-    const _intersection = new Set();
-    for (const elem of setB) {
-      if (setA.has(elem)) {
-        _intersection.add(elem);
-      }
+  // ---- Two small inline icons (no external icon library needed) ----
+  const ICON_COCKTAIL =
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 4 L20 4 L12 13 Z"/><path d="M12 13 L12 20"/><path d="M8 20 L16 20"/></svg>';
+  // A plus sign — picking an ingredient adds it to the filter list.
+  const ICON_INGREDIENT =
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 5 L12 19"/><path d="M5 12 L19 12"/></svg>';
+  // A subtle up-right arrow signalling that a cocktail row opens its recipe.
+  const ICON_ARROW =
+    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M7 17 L17 7"/><path d="M8 7 L17 7 L17 16"/></svg>';
+
+  // ---- State: which ingredients are currently filtering ----
+  const selectedIngredients = [];
+
+  const input = document.getElementById("search-input");
+  const chipsEl = document.getElementById("chips");
+  const dropdown = document.getElementById("search-dropdown");
+  const drinksList = document.getElementById("drinks-list");
+  const drinksNoMatch = document.getElementById("drinks-no-match");
+  const itemTemplate = document.getElementById("drink-li-template").content
+    .firstElementChild;
+
+  // Slugs of drinks that pass ALL selected ingredients.
+  // No selections yet? Then every drink passes.
+  function filteredSlugs() {
+    if (selectedIngredients.length === 0) {
+      return Object.keys(drinkSlugsToDrinks);
     }
-    return _intersection;
-  };
-
-  DrinksData.prototype.searchDrinks = function (ingredients) {
-    if (ingredients.length === 0) {
-      return [];
+    let result = new Set(ingredientsToDrinks[selectedIngredients[0]] || []);
+    for (let i = 1; i < selectedIngredients.length; i++) {
+      const next = new Set(ingredientsToDrinks[selectedIngredients[i]] || []);
+      result = new Set([...result].filter((slug) => next.has(slug)));
     }
-
-    let matchingSlugs = new Set(this.ingredientsToDrinks[ingredients[0]]);
-    for (let i = 1; i < ingredients.length; i++) {
-      matchingSlugs = DrinksData._intersection(
-        matchingSlugs,
-        new Set(this.ingredientsToDrinks[ingredients[i]])
-      );
-    }
-
-    return Array.from(matchingSlugs);
-  };
-
-  DrinksData.prototype.getDrinkBySlug = function (drinkSlug) {
-    return this.drinkSlugsToDrinks[drinkSlug];
-  };
-
-  // Manage drinks lists
-  const DrinksList = function () {
-    this.$drinksList = document.getElementById("drinks-list");
-    this.$drinksNoMatch = document.getElementById("drinks-no-match");
-    this.$itemTemplate = document.getElementById(
-      "drink-li-template"
-    ).content.firstElementChild;
-  };
-
-  DrinksList.prototype.createDrinkItemNode = function (drink) {
-    const $item = this.$itemTemplate.cloneNode(true);
-    const $anchor = $item.children[0];
-    $anchor.href = drink.drinkUrl;
-    $anchor.querySelector('[data-drink-li-prop="drinkTitle"').innerText =
-      drink.drinkTitle;
-    $anchor.querySelector(
-      '[data-drink-li-prop="ingredients"'
-    ).innerText = drink.ingredients.join(", ");
-    return $item;
-  };
-
-  DrinksList.prototype.resetDrinksList = function () {
-    this.$drinksNoMatch.style.display = "none";
-    this.$drinksList.style.display = "none";
-    this.$drinksList.replaceChildren();
-  };
-
-  DrinksList.prototype.renderDrinksList = function (drinks) {
-    const newChildren = [];
-    for (const drink of drinks) {
-      newChildren.push(this.createDrinkItemNode(drink));
-    }
-    this.$drinksNoMatch.style.display = "none";
-    this.$drinksList.style.display = null;
-    this.$drinksList.replaceChildren(...newChildren);
-  };
-
-  DrinksList.prototype.renderNoMatch = function (drinkSlugs) {
-    this.$drinksList.style.display = "none";
-    this.$drinksList.replaceChildren();
-    this.$drinksNoMatch.style.display = null;
-  };
-
-  const drinksData = new DrinksData();
-  const drinksList = new DrinksList();
-
-  const ingredientSelector = new TomSelect("#ingredients-select", {
-    plugins: {
-      remove_button: {
-        title: "Remove this item",
-      },
-    },
-    closeAfterSelect: true,
-    // onChange: onIngredientsChange,
-  });
-  function onIngredientsChange(ingredients) {
-    if (ingredients.length === 0) {
-      drinksList.resetDrinksList();
-      ingredientSelector.blur();
-      return;
-    }
-
-    const drinkSlugs = drinksData.searchDrinks(ingredients);
-
-    if (drinkSlugs.length === 0) {
-      drinksList.renderNoMatch();
-      ingredientSelector.blur();
-      return;
-    }
-
-    drinksList.renderDrinksList(
-      drinkSlugs.map((ds) => drinksData.getDrinkBySlug(ds))
-    );
-    ingredientSelector.blur();
+    return [...result];
   }
-  ingredientSelector.on("change", onIngredientsChange);
+
+  // ---- Chips inside the search bar ----
+  function renderChips() {
+    chipsEl.replaceChildren();
+    selectedIngredients.forEach((ingredient, index) => {
+      const chip = document.createElement("span");
+      chip.className =
+        "inline-flex items-center gap-1 rounded-sm bg-slate-200 text-slate-700 text-sm pl-2 pr-1 py-0.5";
+      chip.textContent = ingredient;
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.setAttribute("aria-label", "Remove " + ingredient);
+      remove.className = "leading-none text-slate-500 hover:text-slate-800 px-1";
+      remove.textContent = "×";
+      remove.addEventListener("click", (event) => {
+        event.stopPropagation();
+        selectedIngredients.splice(index, 1);
+        renderChips();
+        renderResults();
+        renderDropdown();
+      });
+
+      chip.appendChild(remove);
+      chipsEl.appendChild(chip);
+    });
+  }
+
+  // ---- The filtered results list below the bar ----
+  function drinkItemNode(drink) {
+    const item = itemTemplate.cloneNode(true);
+    const anchor = item.children[0];
+    anchor.href = drink.drinkUrl;
+    anchor.querySelector('[data-drink-li-prop="drinkTitle"]').innerText =
+      drink.drinkTitle;
+    anchor.querySelector('[data-drink-li-prop="ingredients"]').innerText =
+      drink.ingredients.join(", ");
+    return item;
+  }
+
+  function renderResults() {
+    // Only show the results list once at least one ingredient is chosen.
+    if (selectedIngredients.length === 0) {
+      drinksList.style.display = "none";
+      drinksList.replaceChildren();
+      drinksNoMatch.style.display = "none";
+      return;
+    }
+    const slugs = filteredSlugs();
+    if (slugs.length === 0) {
+      drinksList.style.display = "none";
+      drinksList.replaceChildren();
+      drinksNoMatch.style.display = null;
+      return;
+    }
+    drinksNoMatch.style.display = "none";
+    drinksList.replaceChildren(
+      ...slugs.map((slug) => drinkItemNode(drinkSlugsToDrinks[slug]))
+    );
+    drinksList.style.display = null;
+  }
+
+  // ---- The type-ahead dropdown ----
+  const MAX_PER_GROUP = 8;
+
+  function groupHeader(text) {
+    const el = document.createElement("div");
+    el.className =
+      "px-3 pt-2 pb-1 text-xs font-medium uppercase tracking-wide text-slate-400";
+    el.textContent = text;
+    return el;
+  }
+
+  function renderDropdown() {
+    const query = input.value.trim().toLowerCase();
+    if (!query) {
+      dropdown.style.display = "none";
+      dropdown.replaceChildren();
+      return;
+    }
+
+    // Cocktail matches — limited to drinks that pass the active chips,
+    // matched anywhere in the name.
+    const cocktailMatches = filteredSlugs()
+      .map((slug) => drinkSlugsToDrinks[slug])
+      .filter((drink) => drink.drinkTitle.toLowerCase().includes(query))
+      .sort((a, b) => a.drinkTitle.localeCompare(b.drinkTitle))
+      .slice(0, MAX_PER_GROUP);
+
+    // Ingredient matches — matched anywhere, excluding ones already chosen.
+    const ingredientMatches = allIngredients
+      .filter(
+        (ing) => ing.includes(query) && !selectedIngredients.includes(ing)
+      )
+      .slice(0, MAX_PER_GROUP);
+
+    dropdown.replaceChildren();
+
+    // Cocktails first (per the chosen design).
+    if (cocktailMatches.length > 0) {
+      dropdown.appendChild(groupHeader("Cocktails"));
+      cocktailMatches.forEach((drink) => {
+        const opt = document.createElement("div");
+        opt.className = "opt flex items-center gap-2 px-3 py-2";
+        opt.innerHTML =
+          ICON_COCKTAIL +
+          '<span class="text-sm text-slate-800 flex-1"></span>' +
+          ICON_ARROW;
+        opt.querySelector("span").textContent = drink.drinkTitle;
+        opt.addEventListener("click", () => {
+          window.location = drink.drinkUrl; // a name pick navigates to the recipe
+        });
+        dropdown.appendChild(opt);
+      });
+    }
+
+    // Ingredients second.
+    if (ingredientMatches.length > 0) {
+      dropdown.appendChild(groupHeader("Filter by ingredients"));
+      ingredientMatches.forEach((ingredient) => {
+        const count = (ingredientsToDrinks[ingredient] || []).length;
+        const opt = document.createElement("div");
+        opt.className = "opt flex items-center justify-between gap-2 px-3 py-2";
+
+        const left = document.createElement("div");
+        left.className = "flex items-center gap-2";
+        left.innerHTML =
+          ICON_INGREDIENT + '<span class="text-sm text-slate-800"></span>';
+        left.querySelector("span").textContent = ingredient;
+
+        const tag = document.createElement("span");
+        tag.className = "text-xs text-slate-500";
+        tag.textContent = "used in " + count + (count === 1 ? " drink" : " drinks");
+
+        opt.appendChild(left);
+        opt.appendChild(tag);
+        opt.addEventListener("click", () => addIngredient(ingredient));
+        dropdown.appendChild(opt);
+      });
+    }
+
+    if (cocktailMatches.length === 0 && ingredientMatches.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "px-3 py-2 text-sm text-slate-400";
+      empty.textContent = "No cocktail or ingredient matches";
+      dropdown.appendChild(empty);
+    }
+
+    dropdown.style.display = null;
+  }
+
+  function addIngredient(ingredient) {
+    selectedIngredients.push(ingredient);
+    input.value = "";
+    renderChips();
+    renderResults();
+    renderDropdown(); // now empty -> hides itself
+    input.focus();
+  }
+
+  // ---- Wiring ----
+  input.addEventListener("input", renderDropdown);
+  document.getElementById("search-box").addEventListener("click", () => {
+    input.focus();
+  });
+  // Close the dropdown when clicking outside the search area.
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest("#search-area")) {
+      dropdown.style.display = "none";
+    }
+  });
 </script>
 {% endblock %}
